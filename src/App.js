@@ -1,23 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header'
+import Tasks from './components/Tasks'
+import {useState} from  'react'
+import AddTask from './components/AddTask'
 
 function App() {
+
+  const [showAddTask,setShowAddTask] = useState (true)
+
+
+  const [tasks,setTasks]=useState([{
+      id:1,
+      text: ' doctors appointment ',
+      reminder :'true',
+      day:'tuesday 6th feb at 2pm',
+  },
+  {
+    id :2, 
+    text : ' high school meeting',
+    day:' wednesday 11 april 4.pm',
+    reminder :'true'
+  }
+])
+
+
+const addTask =(task)=>{
+  const id =Math.floor(Math.random()*
+  1000) +1
+  const newTask = {id, ...task}
+  setTasks([...tasks,newTask])
+
+
+}
+
+const toggleReminder =(id) =>{
+  setTasks(
+    tasks.map((task) =>
+    task.id ===id ? { ...task,reminder:!task.reminder}:task
+  )
+  )
+}
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="conatiner">
+      <Header  onAdd={()=> setShowAddTask(!showAddTask)}/>
+     { showAddTask && <AddTask onAdd={addTask}/>}
+      <Tasks tasks={tasks}
+      onToggle={toggleReminder} />
     </div>
   );
 }
